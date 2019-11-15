@@ -7,11 +7,11 @@ public class NewUser {
     private UserDetails userDetails;
 
     @NotNull
-    private HashPair hashPair;
+    private String password;
 
-    public NewUser(UserDetails userDetails, HashPair hashPair) {
+    public NewUser(UserDetails userDetails, String password) {
         this.userDetails = userDetails;
-        this.hashPair = hashPair;
+        this.password = password;
     }
 
     public UserDetails getUserDetails() {
@@ -22,11 +22,11 @@ public class NewUser {
         this.userDetails = userDetails;
     }
 
-    public HashPair getHashPair() {
-        return hashPair;
+    public String getPassword() {
+        return password;
     }
 
-    public void setHashPair(HashPair hashPair) {
-        this.hashPair = hashPair;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

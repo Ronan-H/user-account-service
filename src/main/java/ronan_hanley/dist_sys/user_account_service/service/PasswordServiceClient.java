@@ -1,4 +1,4 @@
-package ronan_hanley.dist_sys.user_account_service;
+package ronan_hanley.dist_sys.user_account_service.service;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -28,7 +28,7 @@ public class PasswordServiceClient {
     }
 
     public void generateHashPairAsync(NewUser newUser, StreamObserver<HashResponse> responseObserver) {
-        logger.info(String.format("Generating hash pair"));
+        logger.info("Generating hash pair");
 
         // build hash request
         HashRequest hashRequest = HashRequest.newBuilder()
@@ -36,7 +36,6 @@ public class PasswordServiceClient {
                 .setPassword(newUser.getPassword())
                 .build();
 
-        HashResponse hashResponse;
         try {
             asyncClientStub.hash(hashRequest, responseObserver);
         } catch (StatusRuntimeException e) {
@@ -49,7 +48,7 @@ public class PasswordServiceClient {
         ValidateRequest validateRequest = ValidateRequest.newBuilder()
                 .setPassword(pass)
                 .setHashPair(hashPairRep.toHashPairGRPC()
-                ).build();
+         ).build();
 
         ValidateResponse validateResponse;
         try {
@@ -60,7 +59,7 @@ public class PasswordServiceClient {
         }
 
         // print response
-        logger.info("Valid: " + validateResponse.getValid());
+        logger.info("Valid password: " + validateResponse.getValid());
 
         return validateResponse.getValid();
     }

@@ -27,7 +27,7 @@ public class HashPairRep {
         return HashPair.newBuilder()
                 .setHash(ByteString.copyFrom(hashedPassword))
                 .setSalt(ByteString.copyFrom(salt))
-                .build();
+        .build();
     }
 
     public byte[] getHashedPassword() {

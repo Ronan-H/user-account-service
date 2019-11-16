@@ -1,4 +1,4 @@
-package ronan_hanley.dist_sys.user_account_service;
+package ronan_hanley.dist_sys.user_account_service.service;
 
 import com.codahale.metrics.health.HealthCheck;
 import com.google.protobuf.ByteString;
@@ -6,6 +6,8 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import ronan_hanley.dist_sys.user_account_service.proto.*;
+
+import java.util.concurrent.TimeUnit;
 
 public class GRPCHealthCheck extends HealthCheck {
     private String host;
@@ -31,7 +33,7 @@ public class GRPCHealthCheck extends HealthCheck {
         HashRequest hashRequest = HashRequest.newBuilder()
                 .setUserId(0)
                 .setPassword(pass)
-                .build();
+        .build();
 
         HashResponse hashResponse;
         try {
@@ -41,15 +43,12 @@ public class GRPCHealthCheck extends HealthCheck {
             return Result.unhealthy("gRPC hash test failed");
         }
 
-        ByteString hash = hashResponse.getHashPair().getHash();
-        ByteString salt = hashResponse.getHashPair().getSalt();
-
         // build validation request
         ValidateRequest validateRequest = ValidateRequest.newBuilder()
                 .setPassword(pass)
                 .setHashPair(HashPair.newBuilder()
-                        .setHash(hash)
-                        .setSalt(salt)
+                        .setHash(hashResponse.getHashPair().getHash())
+                        .setSalt(hashResponse.getHashPair().getSalt())
                 ).build();
 
         ValidateResponse validateResponse;
@@ -62,6 +61,8 @@ public class GRPCHealthCheck extends HealthCheck {
         if (!validateResponse.getValid()) {
             return Result.unhealthy("Hash validation was incorrect");
         }
+
+        channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
 
         return Result.healthy();
     }

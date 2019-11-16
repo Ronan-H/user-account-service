@@ -1,4 +1,4 @@
-package ronan_hanley.dist_sys.user_account_service;
+package ronan_hanley.dist_sys.user_account_service.service;
 
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
@@ -87,6 +87,10 @@ public class MappedUserManager implements UserManager {
         User dbUser = users.get(userLogin.getUserDetails().getUserId());
 
         if (dbUser == null) {
+            return false;
+        }
+
+        if (!userLogin.getUserDetails().equals(dbUser.getUserDetails())) {
             return false;
         }
 

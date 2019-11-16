@@ -3,11 +3,12 @@ package ronan_hanley.dist_sys.user_account_service;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ronan_hanley.dist_sys.user_account_service.service.GRPCHealthCheck;
+import ronan_hanley.dist_sys.user_account_service.service.LoginRESTController;
+import ronan_hanley.dist_sys.user_account_service.service.MappedUserManager;
+import ronan_hanley.dist_sys.user_account_service.service.UserRESTController;
 
 public class AccountServiceApp extends Application<Configuration> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceApp.class);
 
     @Override
     public void run(Configuration config, Environment env) {

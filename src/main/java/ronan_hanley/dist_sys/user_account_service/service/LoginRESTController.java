@@ -1,4 +1,4 @@
-package ronan_hanley.dist_sys.user_account_service;
+package ronan_hanley.dist_sys.user_account_service.service;
 
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 

@@ -14,22 +14,4 @@ public class CLIArgs {
             description = "Port to host the server on"
     )
     Integer port = 50051;
-
-    @Parameter(
-            names = {"--hash-iterations", "-hi"},
-            description = "Number of iterations to use for hashing"
-    )
-    Integer hashIterations = 10000;
-
-    @Parameter(
-            names = {"--key-length", "-kl"},
-            description = "Key length to use for hashing"
-    )
-    Integer hashKeyLength = 256;
-
-    @Parameter(
-            names = {"--salt-length", "-sl"},
-            description = "Length (number of bytes) of randomly generated salts"
-    )
-    Integer saltLength = 32;
 }

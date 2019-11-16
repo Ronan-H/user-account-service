@@ -43,4 +43,14 @@ public class UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDetails that = (UserDetails) o;
+        return userId.equals(that.userId) &&
+                userName.equals(that.userName) &&
+                email.equals(that.email);
+    }
 }

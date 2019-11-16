@@ -1,4 +1,4 @@
-package ronan_hanley.dist_sys.user_account_service;
+package ronan_hanley.dist_sys.user_account_service.service;
 
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 
@@ -58,7 +58,7 @@ public class UserRESTController {
             return Response.ok().build();
         }
         else {
-            // 404 user not fouind
+            // 404 user not found
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }

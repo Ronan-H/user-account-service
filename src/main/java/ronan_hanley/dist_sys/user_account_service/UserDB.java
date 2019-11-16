@@ -7,8 +7,8 @@ import java.util.List;
 public interface UserDB {
     void createUser(NewUser newUser);
     User getUser(Integer id);
-    void updateUser(Integer id, NewUser updatedUser);
-    void deleteUser(Integer id);
+    void updateUser(NewUser updatedUser);
+    boolean deleteUser(Integer id);
     List<User> getAllUsers();
     boolean isValidUser(NewUser userLogin);
 }

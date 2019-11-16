@@ -39,15 +39,15 @@ public class MappedUserDB implements UserDB {
     }
 
     @Override
-    public void updateUser(Integer id, NewUser updatedUser) {
+    public void updateUser(NewUser updatedUser) {
         // TODO: use grpc-password-service to obtain a HashPair
         User user = new User(updatedUser.getUserDetails(), new HashPair(new byte[0], new byte[0]));
         users.put(user.getUserDetails().getUserId(), user);
     }
 
     @Override
-    public void deleteUser(Integer id) {
-        users.remove(id);
+    public boolean deleteUser(Integer id) {
+        return users.remove(id) != null;
     }
 
     @Override

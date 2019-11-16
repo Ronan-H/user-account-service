@@ -5,7 +5,6 @@ import ronan_hanley.dist_sys.user_account_service.representations.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.util.ArrayList;
 
 @Path("/users")
 public class UserRESTController {
@@ -47,5 +46,33 @@ public class UserRESTController {
     @Produces({ "application/json", "application/xml" })
     public Response getUsers() {
         return Response.ok(userDB.getAllUsers()).build();
+    }
+
+    @PUT
+    @Produces({ "application/json", "application/xml" })
+    public Response updateUser(NewUser updatedUser) {
+        // TODO checks to make sure newUser is valid
+        if (updatedUser != null) {
+            userDB.updateUser(updatedUser);
+            return Response.ok().build();
+        }
+        else {
+            // 405 bad request
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces({ "application/json", "application/xml" })
+    public Response deleteUser(@PathParam("id") Integer id) {
+        boolean success = userDB.deleteUser(id);
+        if (success) {
+            return Response.ok().build();
+        }
+        else {
+            // 404 user not found
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 }

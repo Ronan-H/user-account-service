@@ -4,14 +4,14 @@
 package ronan_hanley.dist_sys.user_account_service.proto;
 
 /**
- * Protobuf type {@code HashPair}
+ * Protobuf type {@code HashPairRep}
  */
 public  final class HashPair extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:HashPair)
+    // @@protoc_insertion_point(message_implements:HashPairRep)
     HashPairOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use HashPair.newBuilder() to construct.
+  // Use HashPairRep.newBuilder() to construct.
   private HashPair(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
@@ -277,11 +277,11 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code HashPair}
+   * Protobuf type {@code HashPairRep}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:HashPair)
+      // @@protoc_insertion_point(builder_implements:HashPairRep)
       HashPairOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
@@ -296,7 +296,7 @@ private static final long serialVersionUID = 0L;
               HashPair.class, HashPair.Builder.class);
     }
 
-    // Construct using ronan_hanley.dist_sys.user_account_service.proto.HashPair.newBuilder()
+    // Construct using ronan_hanley.dist_sys.user_account_service.proto.HashPairRep.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -499,10 +499,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:HashPair)
+    // @@protoc_insertion_point(builder_scope:HashPairRep)
   }
 
-  // @@protoc_insertion_point(class_scope:HashPair)
+  // @@protoc_insertion_point(class_scope:HashPairRep)
   private static final HashPair DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new HashPair();

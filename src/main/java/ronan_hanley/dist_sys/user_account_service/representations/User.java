@@ -7,24 +7,14 @@ public class User {
     private UserDetails userDetails;
 
     @NotNull
-    private HashPair hashPair;
+    private HashPairRep hashPairRep;
 
-    public User(UserDetails userDetails, HashPair hashPair) {
+    public User(UserDetails userDetails, HashPairRep hashPairRep) {
         this.userDetails = userDetails;
-        this.hashPair = hashPair;
+        this.hashPairRep = hashPairRep;
     }
 
     public User() {}
-
-    /**
-     * Temporary constructor while I figure out the GRPC stuff
-     * TODO use grpc-password-service here
-     * @param newUser
-     */
-    public User(NewUser newUser) {
-        this.userDetails = newUser.getUserDetails();
-        this.hashPair = new HashPair(new byte[0], new byte[0]);
-    }
 
     public UserDetails getUserDetails() {
         return userDetails;
@@ -34,11 +24,11 @@ public class User {
         this.userDetails = userDetails;
     }
 
-    public HashPair getHashPair() {
-        return hashPair;
+    public HashPairRep getHashPairRep() {
+        return hashPairRep;
     }
 
-    public void setHashPair(HashPair hashPair) {
-        this.hashPair = hashPair;
+    public void setHashPairRep(HashPairRep hashPairRep) {
+        this.hashPairRep = hashPairRep;
     }
 }

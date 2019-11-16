@@ -4,7 +4,7 @@
 package ronan_hanley.dist_sys.user_account_service.proto;
 
 public interface HashPairOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:HashPair)
+    // @@protoc_insertion_point(interface_extends:HashPairRep)
     com.google.protobuf.MessageOrBuilder {
 
   /**

@@ -1,6 +1,6 @@
 package ronan_hanley.dist_sys.user_account_service;
 
-import ronan_hanley.dist_sys.user_account_service.representations.HashPair;
+import ronan_hanley.dist_sys.user_account_service.representations.HashPairRep;
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import ronan_hanley.dist_sys.user_account_service.representations.User;
 
@@ -13,10 +13,12 @@ public class MappedUserDB implements UserDB {
     private static MappedUserDB instance;
 
     private Map<Integer, User> users;
+    private PasswordServiceClient passwordServiceClient;
     private int nextKey = 0;
 
     private MappedUserDB() {
         users = new HashMap<>();
+        passwordServiceClient = new PasswordServiceClient("localhost", 50051);
     }
 
     public static MappedUserDB getInstance() {
@@ -29,8 +31,8 @@ public class MappedUserDB implements UserDB {
 
     @Override
     public void createUser(NewUser newUser) {
-        // TODO use grpc-password-service here
-        users.put(newUser.getUserDetails().getUserId(), new User(newUser));
+        HashPairRep hashPair = passwordServiceClient.generateHashPair(newUser);
+        users.put(newUser.getUserDetails().getUserId(), new User(newUser.getUserDetails(), hashPair));
     }
 
     @Override
@@ -40,8 +42,8 @@ public class MappedUserDB implements UserDB {
 
     @Override
     public void updateUser(NewUser updatedUser) {
-        // TODO: use grpc-password-service to obtain a HashPair
-        User user = new User(updatedUser.getUserDetails(), new HashPair(new byte[0], new byte[0]));
+        HashPairRep hashPair = passwordServiceClient.generateHashPair(updatedUser);
+        User user = new User(updatedUser.getUserDetails(), hashPair);
         users.put(user.getUserDetails().getUserId(), user);
     }
 
@@ -57,7 +59,12 @@ public class MappedUserDB implements UserDB {
 
     @Override
     public boolean isValidUser(NewUser userLogin) {
-        // TODO: use grpc-password-service to validate the login
-        return false;
+        User dbUser = users.get(userLogin.getUserDetails().getUserId());
+
+        if (dbUser == null) {
+            return false;
+        }
+
+        return passwordServiceClient.verifyPassword(userLogin.getPassword(), dbUser.getHashPairRep());
     }
 }

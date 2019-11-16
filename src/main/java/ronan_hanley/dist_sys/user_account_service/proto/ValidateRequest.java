@@ -137,19 +137,19 @@ private static final long serialVersionUID = 0L;
   public static final int HASHPAIR_FIELD_NUMBER = 2;
   private HashPair hashPair_;
   /**
-   * <code>.HashPair hashPair = 2;</code>
+   * <code>.HashPairRep hashPair = 2;</code>
    */
   public boolean hasHashPair() {
     return hashPair_ != null;
   }
   /**
-   * <code>.HashPair hashPair = 2;</code>
+   * <code>.HashPairRep hashPair = 2;</code>
    */
   public HashPair getHashPair() {
     return hashPair_ == null ? HashPair.getDefaultInstance() : hashPair_;
   }
   /**
-   * <code>.HashPair hashPair = 2;</code>
+   * <code>.HashPairRep hashPair = 2;</code>
    */
   public HashPairOrBuilder getHashPairOrBuilder() {
     return getHashPair();
@@ -560,13 +560,13 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         HashPair, HashPair.Builder, HashPairOrBuilder> hashPairBuilder_;
     /**
-     * <code>.HashPair hashPair = 2;</code>
+     * <code>.HashPairRep hashPair = 2;</code>
      */
     public boolean hasHashPair() {
       return hashPairBuilder_ != null || hashPair_ != null;
     }
     /**
-     * <code>.HashPair hashPair = 2;</code>
+     * <code>.HashPairRep hashPair = 2;</code>
      */
     public HashPair getHashPair() {
       if (hashPairBuilder_ == null) {
@@ -576,7 +576,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.HashPair hashPair = 2;</code>
+     * <code>.HashPairRep hashPair = 2;</code>
      */
     public Builder setHashPair(HashPair value) {
       if (hashPairBuilder_ == null) {
@@ -592,7 +592,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.HashPair hashPair = 2;</code>
+     * <code>.HashPairRep hashPair = 2;</code>
      */
     public Builder setHashPair(
         HashPair.Builder builderForValue) {
@@ -606,7 +606,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.HashPair hashPair = 2;</code>
+     * <code>.HashPairRep hashPair = 2;</code>
      */
     public Builder mergeHashPair(HashPair value) {
       if (hashPairBuilder_ == null) {
@@ -624,7 +624,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.HashPair hashPair = 2;</code>
+     * <code>.HashPairRep hashPair = 2;</code>
      */
     public Builder clearHashPair() {
       if (hashPairBuilder_ == null) {
@@ -638,7 +638,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.HashPair hashPair = 2;</code>
+     * <code>.HashPairRep hashPair = 2;</code>
      */
     public HashPair.Builder getHashPairBuilder() {
 
@@ -646,7 +646,7 @@ private static final long serialVersionUID = 0L;
       return getHashPairFieldBuilder().getBuilder();
     }
     /**
-     * <code>.HashPair hashPair = 2;</code>
+     * <code>.HashPairRep hashPair = 2;</code>
      */
     public HashPairOrBuilder getHashPairOrBuilder() {
       if (hashPairBuilder_ != null) {
@@ -657,7 +657,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.HashPair hashPair = 2;</code>
+     * <code>.HashPairRep hashPair = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         HashPair, HashPair.Builder, HashPairOrBuilder>

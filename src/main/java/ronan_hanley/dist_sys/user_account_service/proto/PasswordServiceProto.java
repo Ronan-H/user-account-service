@@ -52,8 +52,8 @@ public final class PasswordServiceProto {
       "hash\030\001 \001(\014\022\014\n\004salt\030\002 \001(\014\"/\n\013HashRequest\022" +
       "\016\n\006userId\030\001 \001(\005\022\020\n\010password\030\002 \001(\t\";\n\014Has" +
       "hResponse\022\016\n\006userId\030\001 \001(\005\022\033\n\010hashPair\030\002 " +
-      "\001(\0132\t.HashPair\"@\n\017ValidateRequest\022\020\n\010pas" +
-      "sword\030\001 \001(\t\022\033\n\010hashPair\030\002 \001(\0132\t.HashPair" +
+      "\001(\0132\t.HashPairRep\"@\n\017ValidateRequest\022\020\n\010pas" +
+      "sword\030\001 \001(\t\022\033\n\010hashPair\030\002 \001(\0132\t.HashPairRep" +
       "\"!\n\020ValidateResponse\022\r\n\005valid\030\001 \001(\0102k\n\017P" +
       "asswordService\022%\n\004Hash\022\014.HashRequest\032\r.H" +
       "ashResponse\"\000\0221\n\010Validate\022\020.ValidateRequ" +
@@ -82,13 +82,13 @@ public final class PasswordServiceProto {
     internal_static_HashResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_HashResponse_descriptor,
-        new String[] { "UserId", "HashPair", });
+        new String[] { "UserId", "HashPairRep", });
     internal_static_ValidateRequest_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_ValidateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ValidateRequest_descriptor,
-        new String[] { "Passwords", "HashPair", });
+        new String[] { "Passwords", "HashPairRep", });
     internal_static_ValidateResponse_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_ValidateResponse_fieldAccessorTable = new

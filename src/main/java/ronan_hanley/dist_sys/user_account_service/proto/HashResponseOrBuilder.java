@@ -13,15 +13,15 @@ public interface HashResponseOrBuilder extends
   int getUserId();
 
   /**
-   * <code>.HashPair hashPair = 2;</code>
+   * <code>.HashPairRep hashPair = 2;</code>
    */
   boolean hasHashPair();
   /**
-   * <code>.HashPair hashPair = 2;</code>
+   * <code>.HashPairRep hashPair = 2;</code>
    */
   HashPair getHashPair();
   /**
-   * <code>.HashPair hashPair = 2;</code>
+   * <code>.HashPairRep hashPair = 2;</code>
    */
   HashPairOrBuilder getHashPairOrBuilder();
 }

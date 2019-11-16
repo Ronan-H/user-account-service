@@ -5,13 +5,19 @@ import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import ronan_hanley.dist_sys.user_account_service.representations.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MappedUserDB implements UserDB {
     private static MappedUserDB instance;
 
-    private MappedUserDB() {}
+    private Map<Integer, User> users;
+    private int nextKey = 0;
+
+    private MappedUserDB() {
+        users = new HashMap<>();
+    }
 
     public static MappedUserDB getInstance() {
         if (instance == null) {
@@ -20,9 +26,6 @@ public class MappedUserDB implements UserDB {
 
         return instance;
     }
-
-    private Map<Integer, User> users;
-    private int nextKey = 0;
 
     @Override
     public void createUser(NewUser newUser) {

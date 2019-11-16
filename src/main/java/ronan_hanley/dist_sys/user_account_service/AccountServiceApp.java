@@ -18,10 +18,13 @@ public class AccountServiceApp extends Application<Configuration> {
     @Override
     public void run(Configuration config, Environment env) {
         LOGGER.info("Run");
+        env.healthChecks().register("APIHealthCheck", new TemplateHealthCheck(""));
+        env.jersey().register(new UserRESTController(MappedUserDB.getInstance()));
     }
 
 
     public static void main(String[] args) throws Exception {
-        new AccountServiceApp().run(args);
+        //new AccountServiceApp().run(args);
+        new AccountServiceApp().run("server");
     }
 }

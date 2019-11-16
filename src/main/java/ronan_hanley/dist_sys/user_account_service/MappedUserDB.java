@@ -44,12 +44,12 @@ public class MappedUserDB implements UserDB {
     public void updateUser(NewUser updatedUser) {
         HashPairRep hashPair = passwordServiceClient.generateHashPair(updatedUser);
         User user = new User(updatedUser.getUserDetails(), hashPair);
-        users.put(user.getUserDetails().getUserId(), user);
+        users.replace(user.getUserDetails().getUserId(), user);
     }
 
     @Override
-    public boolean deleteUser(Integer id) {
-        return users.remove(id) != null;
+    public void deleteUser(Integer id) {
+        users.remove(id);
     }
 
     @Override
@@ -66,5 +66,10 @@ public class MappedUserDB implements UserDB {
         }
 
         return passwordServiceClient.verifyPassword(userLogin.getPassword(), dbUser.getHashPairRep());
+    }
+
+    @Override
+    public boolean userExists(Integer id) {
+        return getUser(id) != null;
     }
 }

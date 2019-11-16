@@ -17,13 +17,12 @@ public class UserRESTController {
     @POST
     @Produces({ "application/json", "application/xml" })
     public Response createUser(NewUser newUser) {
-        // TODO checks to make sure newUser is valid
-        if (newUser != null) {
+        if (newUser != null && !userDB.userExists(newUser.getUserDetails().getUserId())) {
             userDB.createUser(newUser);
             return Response.ok().build();
         }
         else {
-            // 405 bad request
+            // 400 bad request
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
@@ -32,9 +31,8 @@ public class UserRESTController {
     @Path("/{id}")
     @Produces({ "application/json", "application/xml" })
     public Response getUser(@PathParam("id") Integer id) {
-        User user = userDB.getUser(id);
-        if (user != null) {
-            return Response.ok(user).build();
+        if (userDB.userExists(id)) {
+            return Response.ok(userDB.getUser(id)).build();
         }
         else {
             // 404 user not found
@@ -51,14 +49,18 @@ public class UserRESTController {
     @PUT
     @Produces({ "application/json", "application/xml" })
     public Response updateUser(NewUser updatedUser) {
-        // TODO checks to make sure newUser is valid
-        if (updatedUser != null) {
+        if (updatedUser == null) {
+            // 400 bad request
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        if (userDB.userExists(updatedUser.getUserDetails().getUserId())) {
             userDB.updateUser(updatedUser);
             return Response.ok().build();
         }
         else {
-            // 405 bad request
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            // 404 user not fouind
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 
@@ -66,8 +68,8 @@ public class UserRESTController {
     @Path("/{id}")
     @Produces({ "application/json", "application/xml" })
     public Response deleteUser(@PathParam("id") Integer id) {
-        boolean success = userDB.deleteUser(id);
-        if (success) {
+        if (userDB.userExists(id)) {
+            userDB.deleteUser(id);
             return Response.ok().build();
         }
         else {

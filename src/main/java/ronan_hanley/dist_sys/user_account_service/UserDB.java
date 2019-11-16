@@ -8,7 +8,8 @@ public interface UserDB {
     void createUser(NewUser newUser);
     User getUser(Integer id);
     void updateUser(NewUser updatedUser);
-    boolean deleteUser(Integer id);
+    void deleteUser(Integer id);
     List<User> getAllUsers();
     boolean isValidUser(NewUser userLogin);
+    boolean userExists(Integer id);
 }

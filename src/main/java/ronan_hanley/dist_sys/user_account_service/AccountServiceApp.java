@@ -20,6 +20,7 @@ public class AccountServiceApp extends Application<Configuration> {
         LOGGER.info("Run");
         env.healthChecks().register("APIHealthCheck", new TemplateHealthCheck(""));
         env.jersey().register(new UserRESTController(MappedUserDB.getInstance()));
+        env.jersey().register(new LoginRESTController());
     }
 
 

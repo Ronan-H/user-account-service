@@ -18,6 +18,8 @@ public class UserDetails {
         this.email = email;
     }
 
+    public UserDetails() {}
+
     public Integer getUserId() {
         return userId;
     }

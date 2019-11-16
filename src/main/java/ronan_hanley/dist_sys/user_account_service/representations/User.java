@@ -14,6 +14,18 @@ public class User {
         this.hashPair = hashPair;
     }
 
+    public User() {}
+
+    /**
+     * Temporary constructor while I figure out the GRPC stuff
+     * TODO use grpc-password-service here
+     * @param newUser
+     */
+    public User(NewUser newUser) {
+        this.userDetails = newUser.getUserDetails();
+        this.hashPair = new HashPair(new byte[0], new byte[0]);
+    }
+
     public UserDetails getUserDetails() {
         return userDetails;
     }

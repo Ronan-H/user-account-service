@@ -14,6 +14,8 @@ public class NewUser {
         this.password = password;
     }
 
+    public NewUser() {}
+
     public UserDetails getUserDetails() {
         return userDetails;
     }

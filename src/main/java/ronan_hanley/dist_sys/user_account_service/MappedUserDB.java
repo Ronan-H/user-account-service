@@ -29,9 +29,8 @@ public class MappedUserDB implements UserDB {
 
     @Override
     public void createUser(NewUser newUser) {
-        // TODO: use grpc-password-service to obtain a HashPair
-        User user = new User(newUser.getUserDetails(), new HashPair(new byte[0], new byte[0]));
-        users.put(user.getUserDetails().getUserId(), user);
+        // TODO use grpc-password-service here
+        users.put(newUser.getUserDetails().getUserId(), new User(newUser));
     }
 
     @Override
@@ -53,7 +52,7 @@ public class MappedUserDB implements UserDB {
 
     @Override
     public List<User> getAllUsers() {
-        return new ArrayList<User>(users.values());
+        return new ArrayList<>(users.values());
     }
 
     @Override

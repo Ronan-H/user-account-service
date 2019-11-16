@@ -14,6 +14,8 @@ public class HashPair {
         this.salt = salt;
     }
 
+    public HashPair() {}
+
     public byte[] getHashedPassword() {
         return hashedPassword;
     }

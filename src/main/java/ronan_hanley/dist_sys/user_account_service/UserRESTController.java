@@ -1,24 +1,23 @@
 package ronan_hanley.dist_sys.user_account_service;
 
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
-import ronan_hanley.dist_sys.user_account_service.representations.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/users")
 public class UserRESTController {
-    private UserDB userDB;
+    private UserManager userManager;
 
-    public UserRESTController(UserDB userDB) {
-        this.userDB = userDB;
+    public UserRESTController(UserManager userManager) {
+        this.userManager = userManager;
     }
 
     @POST
     @Produces({ "application/json", "application/xml" })
     public Response createUser(NewUser newUser) {
-        if (newUser != null && !userDB.userExists(newUser.getUserDetails().getUserId())) {
-            userDB.createUser(newUser);
+        if (newUser != null && !userManager.userExists(newUser.getUserDetails().getUserId())) {
+            userManager.createUserAsync(newUser);
             return Response.ok().build();
         }
         else {
@@ -31,8 +30,8 @@ public class UserRESTController {
     @Path("/{id}")
     @Produces({ "application/json", "application/xml" })
     public Response getUser(@PathParam("id") Integer id) {
-        if (userDB.userExists(id)) {
-            return Response.ok(userDB.getUser(id)).build();
+        if (userManager.userExists(id)) {
+            return Response.ok(userManager.getUser(id)).build();
         }
         else {
             // 404 user not found
@@ -43,7 +42,7 @@ public class UserRESTController {
     @GET
     @Produces({ "application/json", "application/xml" })
     public Response getUsers() {
-        return Response.ok(userDB.getAllUsers()).build();
+        return Response.ok(userManager.getAllUsers()).build();
     }
 
     @PUT
@@ -54,8 +53,8 @@ public class UserRESTController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        if (userDB.userExists(updatedUser.getUserDetails().getUserId())) {
-            userDB.updateUser(updatedUser);
+        if (userManager.userExists(updatedUser.getUserDetails().getUserId())) {
+            userManager.updateUser(updatedUser);
             return Response.ok().build();
         }
         else {
@@ -68,8 +67,8 @@ public class UserRESTController {
     @Path("/{id}")
     @Produces({ "application/json", "application/xml" })
     public Response deleteUser(@PathParam("id") Integer id) {
-        if (userDB.userExists(id)) {
-            userDB.deleteUser(id);
+        if (userManager.userExists(id)) {
+            userManager.deleteUser(id);
             return Response.ok().build();
         }
         else {

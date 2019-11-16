@@ -4,8 +4,8 @@ import ronan_hanley.dist_sys.user_account_service.representations.*;
 
 import java.util.List;
 
-public interface UserDB {
-    void createUser(NewUser newUser);
+public interface UserManager {
+    void createUserAsync(NewUser newUser);
     User getUser(Integer id);
     void updateUser(NewUser updatedUser);
     void deleteUser(Integer id);

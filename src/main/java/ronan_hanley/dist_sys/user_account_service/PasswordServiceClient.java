@@ -1,9 +1,12 @@
 package ronan_hanley.dist_sys.user_account_service;
 
 import com.google.protobuf.ByteString;
+import com.google.protobuf.Empty;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 import ronan_hanley.dist_sys.user_account_service.proto.*;
 import ronan_hanley.dist_sys.user_account_service.representations.HashPairRep;
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
@@ -17,6 +20,7 @@ public class PasswordServiceClient {
     private static final Logger logger = Logger.getLogger(PasswordServiceClient.class.getName());
     private final ManagedChannel channel;
     private final PasswordServiceGrpc.PasswordServiceBlockingStub clientStub;
+    private final PasswordServiceGrpc.PasswordServiceStub asyncClientStub;
 
     /** Construct client for accessing password service server using the existing channel. */
     public PasswordServiceClient(String host, int port) {
@@ -25,9 +29,10 @@ public class PasswordServiceClient {
                 .usePlaintext()
                 .build();
         clientStub = PasswordServiceGrpc.newBlockingStub(channel);
+        asyncClientStub = PasswordServiceGrpc.newStub(channel);
     }
 
-    public HashPairRep generateHashPair(NewUser newUser) {
+    public void generateHashPairAsync(NewUser newUser, StreamObserver<HashResponse> responseObserver) {
         logger.info(String.format("Generating hash pair"));
 
         // build hash request
@@ -38,22 +43,18 @@ public class PasswordServiceClient {
 
         HashResponse hashResponse;
         try {
-            // get response
-            hashResponse = clientStub.hash(hashRequest);
+            asyncClientStub.hash(hashRequest, responseObserver);
         } catch (StatusRuntimeException e) {
             logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-            return null;
         }
-
-        return new HashPairRep(hashResponse.getHashPair());
     }
 
     public boolean verifyPassword(String pass, HashPairRep hashPairRep) {
         // build validation request
         ValidateRequest validateRequest = ValidateRequest.newBuilder()
-            .setPassword(pass)
-            .setHashPair(hashPairRep.toHashPairGRPC()
-        ).build();
+                .setPassword(pass)
+                .setHashPair(hashPairRep.toHashPairGRPC()
+                ).build();
 
         ValidateResponse validateResponse;
         try {

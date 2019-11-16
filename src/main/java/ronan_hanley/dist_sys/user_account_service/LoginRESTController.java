@@ -7,16 +7,16 @@ import javax.ws.rs.core.*;
 
 @Path("/login")
 public class LoginRESTController {
-    private UserDB userDB;
+    private UserManager userManager;
 
-    public LoginRESTController(UserDB userDB) {
-        this.userDB = userDB;
+    public LoginRESTController(UserManager userManager) {
+        this.userManager = userManager;
     }
 
     @POST
     @Produces({ "application/json", "application/xml" })
     public Response login(NewUser loginUser) {
-        if (loginUser != null && userDB.isValidUser(loginUser)) {
+        if (loginUser != null && userManager.isValidUser(loginUser)) {
             return Response.ok().build();
         }
         else {

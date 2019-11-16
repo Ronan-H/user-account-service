@@ -19,8 +19,8 @@ public class AccountServiceApp extends Application<Configuration> {
     public void run(Configuration config, Environment env) {
         LOGGER.info("Run");
         env.healthChecks().register("APIHealthCheck", new TemplateHealthCheck(""));
-        env.jersey().register(new UserRESTController(MappedUserDB.getInstance()));
-        env.jersey().register(new LoginRESTController(MappedUserDB.getInstance()));
+        env.jersey().register(new UserRESTController(MappedUserManager.getInstance()));
+        env.jersey().register(new LoginRESTController(MappedUserManager.getInstance()));
     }
 
 

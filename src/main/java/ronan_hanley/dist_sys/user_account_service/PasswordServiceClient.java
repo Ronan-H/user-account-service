@@ -1,17 +1,12 @@
 package ronan_hanley.dist_sys.user_account_service;
 
-import com.google.protobuf.ByteString;
-import com.google.protobuf.Empty;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import ronan_hanley.dist_sys.user_account_service.proto.*;
 import ronan_hanley.dist_sys.user_account_service.representations.HashPairRep;
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
-
-import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;

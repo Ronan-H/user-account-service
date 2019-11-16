@@ -20,7 +20,7 @@ public class LoginRESTController {
             return Response.ok().build();
         }
         else {
-            // 405 bad request
+            // 400 bad request
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }

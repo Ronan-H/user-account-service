@@ -1,11 +1,13 @@
 package ronan_hanley.dist_sys.user_account_service;
 
 import com.beust.jcommander.JCommander;
+import com.codahale.metrics.health.HealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
 import ronan_hanley.dist_sys.user_account_service.service.*;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class AccountServiceApp extends Application<Configuration> {
@@ -19,6 +21,17 @@ public class AccountServiceApp extends Application<Configuration> {
     @Override
     public void run(Configuration config, Environment env) {
         env.healthChecks().register("GRPCHealthCheck", new GRPCHealthCheck(jcArgs.host, jcArgs.port));
+
+        HealthCheck.Result result = env.healthChecks().runHealthCheck("GRPCHealthCheck");
+        if (result.isHealthy()) {
+            logger.info("GRPCHealthCheck: OK");
+        }
+        else {
+            logger.severe(String.format("GRPCHealthCheck: FAIL with message \"%s\"", result.getMessage()));
+            logger.severe("Please review your gRPC password service setup and try again. Exiting...");
+            System.exit(1);
+        }
+
 
         PasswordServiceClient passwordServiceClient = new PasswordServiceClient(jcArgs.host, jcArgs.port);
         UserManager userManager = new MappedUserManager(passwordServiceClient);

@@ -1,7 +1,6 @@
 package ronan_hanley.dist_sys.user_account_service.service;
 
 import com.codahale.metrics.health.HealthCheck;
-import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;

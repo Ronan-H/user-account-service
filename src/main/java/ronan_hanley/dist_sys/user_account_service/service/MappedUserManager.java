@@ -3,6 +3,7 @@ package ronan_hanley.dist_sys.user_account_service.service;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import ronan_hanley.dist_sys.user_account_service.proto.HashResponse;
+import ronan_hanley.dist_sys.user_account_service.proto.PasswordServiceGrpc;
 import ronan_hanley.dist_sys.user_account_service.representations.HashPairRep;
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import ronan_hanley.dist_sys.user_account_service.representations.User;
@@ -15,24 +16,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MappedUserManager implements UserManager {
-    private static final Logger logger = Logger.getLogger(PasswordServiceClient.class.getName());
-
-    private static MappedUserManager instance;
+    private static final Logger logger = Logger.getLogger(MappedUserManager.class.getName());
 
     private Map<Integer, User> users;
     private PasswordServiceClient passwordServiceClient;
 
-    private MappedUserManager() {
+    public MappedUserManager(PasswordServiceClient passwordServiceClient) {
+        this.passwordServiceClient = passwordServiceClient;
         users = new HashMap<>();
-        passwordServiceClient = new PasswordServiceClient("localhost", 50051);
-    }
-
-    public static MappedUserManager getInstance() {
-        if (instance == null) {
-            instance = new MappedUserManager();
-        }
-
-        return instance;
     }
 
     @Override

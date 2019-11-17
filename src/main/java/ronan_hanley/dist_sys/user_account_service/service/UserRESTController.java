@@ -1,11 +1,15 @@
 package ronan_hanley.dist_sys.user_account_service.service;
 
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
+import ronan_hanley.dist_sys.user_account_service.representations.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.List;
 
 @Path("/users")
+@Produces({ "application/json", "application/xml" })
+@Consumes({ "application/json", "application/xml" })
 public class UserRESTController {
     private UserManager userManager;
 
@@ -14,7 +18,6 @@ public class UserRESTController {
     }
 
     @POST
-    @Produces({ "application/json", "application/xml" })
     public Response createUser(NewUser newUser) {
         if (newUser != null && !userManager.userExists(newUser.getUserDetails().getUserId())) {
             userManager.createUserAsync(newUser);
@@ -28,7 +31,6 @@ public class UserRESTController {
 
     @GET
     @Path("/{id}")
-    @Produces({ "application/json", "application/xml" })
     public Response getUser(@PathParam("id") Integer id) {
         if (userManager.userExists(id)) {
             return Response.ok(userManager.getUser(id)).build();
@@ -40,13 +42,13 @@ public class UserRESTController {
     }
 
     @GET
-    @Produces({ "application/json", "application/xml" })
     public Response getUsers() {
-        return Response.ok(userManager.getAllUsers()).build();
+        List<User> users = userManager.getAllUsers();
+        GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {};
+        return Response.ok(entity).build();
     }
 
     @PUT
-    @Produces({ "application/json", "application/xml" })
     public Response updateUser(NewUser updatedUser) {
         if (updatedUser == null) {
             // 400 bad request
@@ -65,7 +67,6 @@ public class UserRESTController {
 
     @DELETE
     @Path("/{id}")
-    @Produces({ "application/json", "application/xml" })
     public Response deleteUser(@PathParam("id") Integer id) {
         if (userManager.userExists(id)) {
             userManager.deleteUser(id);

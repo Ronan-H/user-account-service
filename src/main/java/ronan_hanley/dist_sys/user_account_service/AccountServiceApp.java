@@ -7,7 +7,6 @@ import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
 import ronan_hanley.dist_sys.user_account_service.service.*;
 
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class AccountServiceApp extends Application<Configuration> {

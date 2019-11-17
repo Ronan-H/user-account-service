@@ -23,6 +23,8 @@ public class PasswordServiceClient {
                 // no TLS encryption
                 .usePlaintext()
                 .build();
+
+        // create stubs (sync and async)
         clientStub = PasswordServiceGrpc.newBlockingStub(channel);
         asyncClientStub = PasswordServiceGrpc.newStub(channel);
     }
@@ -34,9 +36,11 @@ public class PasswordServiceClient {
         HashRequest hashRequest = HashRequest.newBuilder()
                 .setUserId(newUser.getUserDetails().getUserId())
                 .setPassword(newUser.getPassword())
-                .build();
+        .build();
 
         try {
+            // asynchronous gRPC call
+            // (caller of generateHashPairAsync() will receive the hashResponse through the passed in StreamObserver)
             asyncClientStub.hash(hashRequest, responseObserver);
         } catch (StatusRuntimeException e) {
             logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
@@ -52,14 +56,16 @@ public class PasswordServiceClient {
 
         ValidateResponse validateResponse;
         try {
+            // synchronous gRPC call
             validateResponse = clientStub.validate(validateRequest);
         } catch (StatusRuntimeException e) {
             logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+            // safer to assume password was invalid
             return false;
         }
 
         // print response
-        logger.info("Valid password: " + validateResponse.getValid());
+        logger.info("Valid password: " + Boolean.toString(validateResponse.getValid()).toUpperCase());
 
         return validateResponse.getValid();
     }

@@ -3,7 +3,6 @@ package ronan_hanley.dist_sys.user_account_service.service;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import ronan_hanley.dist_sys.user_account_service.proto.HashResponse;
-import ronan_hanley.dist_sys.user_account_service.proto.PasswordServiceGrpc;
 import ronan_hanley.dist_sys.user_account_service.representations.HashPairRep;
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import ronan_hanley.dist_sys.user_account_service.representations.User;
@@ -32,14 +31,15 @@ public class MappedUserManager implements UserManager {
             @Override
             public void onNext(HashResponse hashResponse) {
                 logger.info("Received hash response");
+                // convert HashPair proto object to HashPairRep
                 HashPairRep hashPair = new HashPairRep(hashResponse.getHashPair());
+                // create User object based on newUser and add to map
                 users.put(newUser.getUserDetails().getUserId(), new User(newUser.getUserDetails(), hashPair));
             }
 
             @Override
             public void onError(Throwable throwable) {
                 Status status = Status.fromThrowable(throwable);
-
                 logger.log(Level.WARNING, "RPC Error: {0}", status);
             }
 
@@ -49,6 +49,7 @@ public class MappedUserManager implements UserManager {
             }
         };
 
+        // generate a HashPair from the new user's password (asynchronous)
         passwordServiceClient.generateHashPairAsync(newUser, responseObserver);
     }
 
@@ -78,13 +79,16 @@ public class MappedUserManager implements UserManager {
         User dbUser = users.get(userLogin.getUserDetails().getUserId());
 
         if (dbUser == null) {
+            // user with that doesn't exist in the map
             return false;
         }
 
         if (!userLogin.getUserDetails().equals(dbUser.getUserDetails())) {
+            // user details (usedId, userName, email) don't fully match
             return false;
         }
 
+        // now just check if the passwords match (check hash(password, salt) == stored hash)
         return passwordServiceClient.verifyPassword(userLogin.getPassword(), dbUser.getHashPairRep());
     }
 

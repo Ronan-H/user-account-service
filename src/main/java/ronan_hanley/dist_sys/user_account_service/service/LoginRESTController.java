@@ -14,9 +14,9 @@ public class LoginRESTController {
     }
 
     @POST
-    @Produces({ "application/json", "application/xml" })
     public Response login(NewUser loginUser) {
         if (loginUser != null && userManager.isValidUser(loginUser)) {
+            // user exists and login is valid
             return Response.ok().build();
         }
         else {

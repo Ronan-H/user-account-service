@@ -20,6 +20,7 @@ public class UserRESTController {
     @POST
     public Response createUser(NewUser newUser) {
         if (newUser != null && !userManager.userExists(newUser.getUserDetails().getUserId())) {
+            // user isn't null and doesn't already exist, create user asynchronously
             userManager.createUserAsync(newUser);
             return Response.ok().build();
         }
@@ -33,6 +34,7 @@ public class UserRESTController {
     @Path("/{id}")
     public Response getUser(@PathParam("id") Integer id) {
         if (userManager.userExists(id)) {
+            // user exists, respond with user details
             return Response.ok(userManager.getUser(id)).build();
         }
         else {
@@ -43,6 +45,7 @@ public class UserRESTController {
 
     @GET
     public Response getUsers() {
+        // nothing to validate here, just respond with a list of all users
         List<User> users = userManager.getAllUsers();
         GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {};
         return Response.ok(entity).build();
@@ -51,11 +54,12 @@ public class UserRESTController {
     @PUT
     public Response updateUser(NewUser updatedUser) {
         if (updatedUser == null) {
-            // 400 bad request
+            // 400 bad request (user was null)
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         if (userManager.userExists(updatedUser.getUserDetails().getUserId())) {
+            // user exists, update user
             userManager.updateUser(updatedUser);
             return Response.ok().build();
         }
@@ -69,6 +73,7 @@ public class UserRESTController {
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") Integer id) {
         if (userManager.userExists(id)) {
+            // user exists, delete user
             userManager.deleteUser(id);
             return Response.ok().build();
         }

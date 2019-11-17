@@ -38,21 +38,16 @@
             <artifactId>grpc-stub</artifactId>
             <version>1.23.0</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.beust/jcommander -->
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
             <version>1.72</version>
         </dependency>
-
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
             <version>${dropwizard.version}</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
@@ -105,7 +100,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ronan_hanley.dist_sys.user_account_service.PasswordServiceServer</mainClass>
+                            <mainClass>ronan_hanley.dist_sys.user_account_service.AccountServiceApp</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -124,7 +119,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>ronan_hanley.dist_sys.user_account_service.PasswordServiceServer</mainClass>
+                            <mainClass>ronan_hanley.dist_sys.user_account_service.AccountServiceApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

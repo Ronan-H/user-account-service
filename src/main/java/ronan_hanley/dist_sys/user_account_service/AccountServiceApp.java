@@ -19,19 +19,23 @@ public class AccountServiceApp extends Application<Configuration> {
 
     @Override
     public void run(Configuration config, Environment env) {
+        // register health check with using gRPC password service
         env.healthChecks().register("GRPCHealthCheck", new GRPCHealthCheck(jcArgs.host, jcArgs.port));
 
+        // run health check
         HealthCheck.Result result = env.healthChecks().runHealthCheck("GRPCHealthCheck");
         if (result.isHealthy()) {
+            //  gRPC connection/stub method calls successful
             logger.info("GRPCHealthCheck: OK");
         }
         else {
+            // gRPC failure, exit program
             logger.severe(String.format("GRPCHealthCheck: FAIL with message \"%s\"", result.getMessage()));
             logger.severe("Please review your gRPC password service setup and try again. Exiting...");
             System.exit(1);
         }
 
-
+        // initialise password service client, user manager, REST controllers
         PasswordServiceClient passwordServiceClient = new PasswordServiceClient(jcArgs.host, jcArgs.port);
         UserManager userManager = new MappedUserManager(passwordServiceClient);
         env.jersey().register(new UserRESTController(userManager));

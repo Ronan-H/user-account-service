@@ -3,7 +3,10 @@ package ronan_hanley.dist_sys.user_account_service;
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import ronan_hanley.dist_sys.user_account_service.representations.UserDetails;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class DummyUserGenerator {
     private static final String[] FIRST_NAMES = {
@@ -68,13 +71,24 @@ public class DummyUserGenerator {
             "x"
     };
 
-    private static Random random = new Random();
+    private Random random;
+    private Map<String, Integer> usernameFreq;
 
-    private static <T> T randomElement(T[] arr) {
+    public DummyUserGenerator(int seed) {
+        random = new Random(seed);
+        usernameFreq = new HashMap<>();
+    }
+
+    public DummyUserGenerator() {
+        random = new Random();
+        usernameFreq = new HashMap<>();
+    }
+
+    private <T> T randomElement(T[] arr) {
         return arr[random.nextInt(arr.length)];
     }
 
-    public static NewUser[] generateDummyUsers(int numDummyUsers) {
+    public NewUser[] generateDummyUsers(int numDummyUsers) {
         NewUser[] dummyUsers = new NewUser[numDummyUsers];
 
         for (int i = 0; i < numDummyUsers; i++) {
@@ -84,7 +98,7 @@ public class DummyUserGenerator {
         return dummyUsers;
     }
 
-    public static NewUser generateDummyUser(int id) {
+    public NewUser generateDummyUser(int id) {
         String firstName = randomElement(FIRST_NAMES);
         String lastName = randomElement(SURNAMES);
         String emailDomain = randomElement(EMAIL_DOMAINS);
@@ -92,6 +106,16 @@ public class DummyUserGenerator {
         String passwordExt = randomElement(PASSWORD_EXTENTIONS);
 
         String userName = firstName + lastName;
+        Integer freq = usernameFreq.get(userName);
+
+        if (freq != null) {
+            usernameFreq.put(userName, freq + 1);
+            userName += "_" + freq;
+        }
+        else {
+            usernameFreq.put(userName, 1);
+        }
+
         String email = String.format("%s.%s@%s",
                 firstName.toLowerCase(),
                 lastName.toLowerCase(),

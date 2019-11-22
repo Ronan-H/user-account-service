@@ -44,7 +44,8 @@ public class AccountServiceApp extends Application<Configuration> {
 
         if (jcArgs.numDummyUsers > 0) {
             // generate dummy users (requested as a command line argument)
-            NewUser[] dummyUsers = DummyUserGenerator.generateDummyUsers(jcArgs.numDummyUsers);
+            DummyUserGenerator dummyUserGenerator = new DummyUserGenerator(10);
+            NewUser[] dummyUsers = dummyUserGenerator.generateDummyUsers(jcArgs.numDummyUsers);
 
             StringBuilder toLog = new StringBuilder();
             for (NewUser dummyUser : dummyUsers) {

@@ -22,7 +22,15 @@ public class User {
         return userDetails;
     }
 
+    public void setUserDetails(UserDetails userDetails) {
+        this.userDetails = userDetails;
+    }
+
     public HashPairRep getHashPairRep() {
         return hashPairRep;
+    }
+
+    public void setHashPairRep(HashPairRep hashPairRep) {
+        this.hashPairRep = hashPairRep;
     }
 }

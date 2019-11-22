@@ -34,7 +34,15 @@ public class HashPairRep {
         return hashedPassword;
     }
 
+    public void setHashedPassword(byte[] hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
     public byte[] getSalt() {
         return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
 }

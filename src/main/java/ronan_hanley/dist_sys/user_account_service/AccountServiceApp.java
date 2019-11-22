@@ -52,6 +52,8 @@ public class AccountServiceApp extends Application<Configuration> {
                 userManager.createUserAsync(dummyUser);
                 toLog.append(String.format("\t%nCreated dummy user: %s", dummyUser.toString()));
             }
+
+            // print dummy user info
             logger.info(toLog.toString());
         }
     }

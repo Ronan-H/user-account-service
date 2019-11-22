@@ -1,5 +1,6 @@
 package ronan_hanley.dist_sys.user_account_service.service;
 
+import io.grpc.StatusRuntimeException;
 import ronan_hanley.dist_sys.user_account_service.representations.LoginUser;
 import ronan_hanley.dist_sys.user_account_service.representations.User;
 
@@ -29,10 +30,17 @@ public class LoginRESTController {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Login failed, user not found with that username").build();
         }
 
-        if (!userManager.loginPasswordMatchesUser(loginUser, dbUser)) {
-            // password incorrect
-            // 401 unauthorized
-            return Response.status(Response.Status.BAD_REQUEST).entity("Login failed, password incorrect").build();
+        try {
+            if (!userManager.loginPasswordMatchesUser(loginUser, dbUser)) {
+                // password incorrect
+                // 401 unauthorized
+                return Response.status(Response.Status.BAD_REQUEST).entity("Login failed, password incorrect").build();
+            }
+        } catch (StatusRuntimeException e) {
+            // gRPC failed
+            // 503 service unavailable
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE)
+                    .entity("Failed to log in, password validation service was not available. Try again later.").build();
         }
 
         // user exists and login is valid

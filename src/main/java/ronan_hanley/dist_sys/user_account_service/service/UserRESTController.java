@@ -1,5 +1,7 @@
 package ronan_hanley.dist_sys.user_account_service.service;
 
+import io.grpc.StatusRuntimeException;
+import jdk.net.SocketFlow;
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import ronan_hanley.dist_sys.user_account_service.representations.User;
 
@@ -23,17 +25,29 @@ public class UserRESTController {
     public Response createUser(NewUser newUser) throws URISyntaxException {
         if (newUser == null) {
             // 400 bad request
-            return Response.status(Response.Status.BAD_REQUEST).entity("Bad request, new user can't be null").build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Bad request, new user can't be null").build();
         }
 
         if (userManager.userExists(newUser.getUserDetails().getUserId())) {
             // 409 conflict
-            return Response.status(Response.Status.CONFLICT).entity("Conflict, user with that id already exists").build();
+            return Response.status(Response.Status.CONFLICT)
+                    .entity("Conflict, user with that id already exists").build();
         }
 
         // user isn't null and doesn't already exist, create user asynchronously
-        userManager.createUserAsync(newUser);
-        return Response.created(new URI("/users/" + newUser.getUserDetails().getUserId())).entity("User created successfully").build();
+        try {
+            userManager.createUserAsync(newUser);
+        } catch (StatusRuntimeException e) {
+            // gRPC failed
+            // 503 service unavailable
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE)
+                    .entity("Failed to create user, password hashing service was not available. Try again later.").build();
+        }
+
+        // 201 created (user created successfully)
+        return Response.created(new URI("/users/" + newUser.getUserDetails().getUserId()))
+                .entity("User created successfully").build();
     }
 
     @GET
@@ -69,7 +83,15 @@ public class UserRESTController {
         }
 
         // user exists, update user
-        userManager.updateUser(updatedUser);
+        try {
+            userManager.updateUser(updatedUser);
+        } catch (StatusRuntimeException e) {
+            // gRPC failed
+            // 503 service unavailable
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE)
+                    .entity("Failed to update user, password hashing service was not available. Try again later.").build();
+        }
+
         return Response.ok().entity("User updated successfully").build();
     }
 

@@ -29,23 +29,19 @@ public class PasswordServiceClient {
         asyncClientStub = PasswordServiceGrpc.newStub(channel);
     }
 
-    public void generateHashPairAsync(NewUser newUser, StreamObserver<HashResponse> responseObserver) {
+    public void generateHashPairAsync(NewUser newUser, StreamObserver<HashResponse> responseObserver) throws StatusRuntimeException {
         // build hash request
         HashRequest hashRequest = HashRequest.newBuilder()
                 .setUserId(newUser.getUserDetails().getUserId())
                 .setPassword(newUser.getPassword())
         .build();
 
-        try {
-            // asynchronous gRPC call
-            // (caller of generateHashPairAsync() will receive the hashResponse through the passed in StreamObserver)
-            asyncClientStub.hash(hashRequest, responseObserver);
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-        }
+        // asynchronous gRPC call
+        // (caller of generateHashPairAsync() will receive the hashResponse through the passed in StreamObserver)
+        asyncClientStub.hash(hashRequest, responseObserver);
     }
 
-    public boolean verifyPassword(String pass, HashPairRep hashPairRep) {
+    public boolean verifyPassword(String pass, HashPairRep hashPairRep) throws StatusRuntimeException {
         // build validation request
         ValidateRequest validateRequest = ValidateRequest.newBuilder()
                 .setPassword(pass)
@@ -53,14 +49,9 @@ public class PasswordServiceClient {
          ).build();
 
         ValidateResponse validateResponse;
-        try {
-            // synchronous gRPC call
-            validateResponse = clientStub.validate(validateRequest);
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-            // safer to assume password was invalid
-            return false;
-        }
+
+        // synchronous gRPC call
+        validateResponse = clientStub.validate(validateRequest);
 
         // print response
         logger.info("Valid password: " + Boolean.toString(validateResponse.getValid()).toUpperCase());

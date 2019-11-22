@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Generates users with random user details
+ */
 public class DummyUserGenerator {
     private static final String[] FIRST_NAMES = {
             "Matthew",
@@ -45,7 +48,7 @@ public class DummyUserGenerator {
             "Daly"
     };
 
-    public static final String[] EMAIL_DOMAINS = {
+    private static final String[] EMAIL_DOMAINS = {
             "gmail.com",
             "yahoo.com",
             "mail.com",
@@ -53,7 +56,7 @@ public class DummyUserGenerator {
             "gmit.ie"
     };
 
-    public static final String[] BASE_PASSWORDS = {
+    private static final String[] BASE_PASSWORDS = {
             "password",
             "qwerty",
             "abcde",
@@ -63,7 +66,7 @@ public class DummyUserGenerator {
             "admin"
     };
 
-    public static final String[] PASSWORD_EXTENTIONS = {
+    private static final String[] PASSWORD_EXTENTIONS = {
             "",
             "1",
             "123",
@@ -76,12 +79,8 @@ public class DummyUserGenerator {
     private Map<String, Integer> usernameFreq;
 
     public DummyUserGenerator(int seed) {
+        // seeded random (so you get the same dummy users every time you run the service)
         random = new Random(seed);
-        usernameFreq = new HashMap<>();
-    }
-
-    public DummyUserGenerator() {
-        random = new Random();
         usernameFreq = new HashMap<>();
     }
 
@@ -100,6 +99,7 @@ public class DummyUserGenerator {
     }
 
     public NewUser generateDummyUser(int id) {
+        // pick random user details
         String firstName = randomElement(FIRST_NAMES);
         String lastName = randomElement(SURNAMES);
         String emailDomain = randomElement(EMAIL_DOMAINS);
@@ -107,6 +107,8 @@ public class DummyUserGenerator {
         String passwordExt = randomElement(PASSWORD_EXTENTIONS);
 
         String userName = firstName + lastName;
+
+        // ensure username is unique (by adding a number if it isn't)
         Integer freq = usernameFreq.get(userName);
 
         if (freq != null) {
@@ -117,6 +119,7 @@ public class DummyUserGenerator {
             usernameFreq.put(userName, 1);
         }
 
+        // form email and password from random fields
         String email = String.format("%s.%s@%s",
                 firstName.toLowerCase(),
                 lastName.toLowerCase(),
@@ -125,6 +128,7 @@ public class DummyUserGenerator {
                 random.nextInt(5) == 0 ? basePassword.toUpperCase() : basePassword.toLowerCase(),
                 passwordExt);
 
+        // create NewUser object
         return new NewUser(
                 new UserDetails(id, userName, email),
                 password

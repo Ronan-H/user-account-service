@@ -1,6 +1,7 @@
 package ronan_hanley.dist_sys.user_account_service.service;
 
 import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import ronan_hanley.dist_sys.user_account_service.proto.HashResponse;
 import ronan_hanley.dist_sys.user_account_service.representations.HashPairRep;
@@ -27,7 +28,7 @@ public class MappedUserManager implements UserManager {
     }
 
     @Override
-    public void createUserAsync(NewUser newUser) {
+    public void createUserAsync(NewUser newUser) throws StatusRuntimeException {
         StreamObserver<HashResponse> responseObserver = new StreamObserver<HashResponse>() {
             @Override
             public void onNext(HashResponse hashResponse) {
@@ -57,7 +58,7 @@ public class MappedUserManager implements UserManager {
     }
 
     @Override
-    public void updateUser(NewUser updatedUser) {
+    public void updateUser(NewUser updatedUser) throws StatusRuntimeException{
         // creating a user same as updating one?
         createUserAsync(updatedUser);
     }

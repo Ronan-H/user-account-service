@@ -23,7 +23,7 @@ public class CLIArgs {
 
     @Parameter(
             names = {"--num-dummy-users", "-du"},
-            description = "Number of dummy users to create on startup"
+            description = "Number of random dummy users to create on startup (seeded)"
     )
     Integer numDummyUsers = 5;
 }

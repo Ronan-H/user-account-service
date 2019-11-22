@@ -8,11 +8,8 @@ import ronan_hanley.dist_sys.user_account_service.proto.*;
 import ronan_hanley.dist_sys.user_account_service.representations.HashPairRep;
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PasswordServiceClient {
-    private static final Logger logger = Logger.getLogger(PasswordServiceClient.class.getName());
     private final ManagedChannel channel;
     private final PasswordServiceGrpc.PasswordServiceBlockingStub clientStub;
     private final PasswordServiceGrpc.PasswordServiceStub asyncClientStub;
@@ -52,9 +49,6 @@ public class PasswordServiceClient {
 
         // synchronous gRPC call
         validateResponse = clientStub.validate(validateRequest);
-
-        // print response
-        logger.info("Valid password: " + Boolean.toString(validateResponse.getValid()).toUpperCase());
 
         return validateResponse.getValid();
     }

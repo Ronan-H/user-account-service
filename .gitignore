@@ -86,3 +86,7 @@ fabric.properties
 *.iml
 
 target/
+
+.project
+.classpath
+.settings/

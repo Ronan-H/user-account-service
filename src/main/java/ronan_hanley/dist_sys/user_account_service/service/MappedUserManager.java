@@ -13,12 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MappedUserManager implements UserManager {
-    private static final Logger logger = Logger.getLogger(MappedUserManager.class.getName());
-
     private Map<Integer, User> users;
     private PasswordServiceClient passwordServiceClient;
 
@@ -40,8 +36,7 @@ public class MappedUserManager implements UserManager {
 
             @Override
             public void onError(Throwable throwable) {
-                Status status = Status.fromThrowable(throwable);
-                logger.log(Level.WARNING, "RPC Error: {0}", status);
+                throw new StatusRuntimeException(Status.UNAVAILABLE);
             }
 
             @Override

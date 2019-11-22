@@ -1,7 +1,6 @@
 package ronan_hanley.dist_sys.user_account_service.service;
 
 import io.grpc.StatusRuntimeException;
-import jdk.net.SocketFlow;
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import ronan_hanley.dist_sys.user_account_service.representations.User;
 

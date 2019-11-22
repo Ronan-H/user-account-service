@@ -1,0 +1,197 @@
+openapi: 3.0.0
+info:
+  description: User Account Service (Distributed Systems assignment, Part 2)
+  version: "1.0.0"
+  title: User Account Service
+paths:
+  /users:
+    post:
+      summary: creates a new user
+      operationId: createUser
+      responses:
+        '201':
+          description: user created successfully
+        '400':
+          description: bad request, NewUser can't be null
+        '409':
+          description: user with that id already exists
+        '503':
+          description: failed to create user, hashing service was not available
+      requestBody:
+        $ref: '#/components/requestBodies/NewUser'
+    get:
+      summary: lists all users
+      operationId: getUsers
+      description: |
+        Returns a list of all users registered on the service
+      responses:
+        '200':
+          description: a list of all users registered on the database
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '404':
+          description: user not found with that id
+    put:
+      summary: update user details
+      operationId: updateUser
+      responses:
+        '200':
+          description: user updated successfully
+        '400':
+          description: bad request, NewUser can't be null
+        '404':
+          description: user not found with the id of passed NewUser
+        '503':
+          description: failed to create user, hashing service was not available
+      requestBody:
+        $ref: '#/components/requestBodies/NewUser'
+  /users/{id}:
+    get:
+      summary: get info from a specific user by id
+      operationId: getUser
+      parameters:
+        - name: id
+          in: path
+          description: id of user to return
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: user response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: user not found with that id
+    delete:
+      description: deletes a single user
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          description: ID of user to delete
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: user deleted successfully
+        '404':
+          description: Invalid user ID
+  /login:
+    post:
+      summary: user login
+      operationId: login
+      responses:
+        '200':
+          description: login successful
+        '400':
+          description: bad request, LoginUser can't be null
+        '401':
+          description: user with that username not found, OR password incorrect (response message will specify)
+        '503':
+          description: failed to login, validation service was not available
+      requestBody:
+        $ref: '#/components/requestBodies/LoginUser'
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - userDetails
+        - hashPair
+      properties:
+        userDetails:
+          $ref: '#/components/schemas/UserDetails'
+        hashPair:
+          $ref: '#/components/schemas/HashPair'
+    NewUser:
+      type: object
+      required:
+        - userDetails
+        - password
+      properties:
+        userDetails:
+          $ref: '#/components/schemas/UserDetails'
+        password:
+          type: string
+          example: qwerty12345
+    LoginUser:
+      type: object
+      required:
+        - userName
+        - password
+      properties:
+        userName:
+          type: string
+          example: JohnSmith
+        password:
+          type: string
+          example: qwerty12345
+    UserDetails:
+      type: object
+      required:
+        - userId
+        - userName
+        - email
+      properties:
+        userId:
+          type: integer
+          example: 3
+        userName:
+          type: string
+          example: JohnSmith
+        email:
+          type: string
+          example: john.smith@example.com
+    HashPair:
+      type: object
+      required:
+        - hashedPassword
+        - salt
+      properties:
+        hashedPassword:
+          type: string
+          format: byte
+          example: ezdeZ/n8+HQKchuakQGbOQmnCQzG0vGH7RwVvOaTp4Y=
+        salt:
+          type: string
+          format: byte
+          example: Bp7y7KJCRNIUExDnvVipK=
+  requestBodies:
+    NewUser:
+      description: user that needs to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NewUser'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/NewUser'
+    LoginUser:
+      description: login attempt
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginUser'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/LoginUser'

@@ -20,7 +20,7 @@ public class AccountServiceApp extends Application<Configuration> {
     @Override
     public void run(Configuration config, Environment env) {
         // register health check with using gRPC password service
-        env.healthChecks().register("GRPCHealthCheck", new GRPCHealthCheck(jcArgs.host, jcArgs.port));
+        env.healthChecks().register("GRPCHealthCheck", new GRPCHealthCheck(jcArgs.grpcHost, jcArgs.grpcPort));
 
         // run health check
         HealthCheck.Result result = env.healthChecks().runHealthCheck("GRPCHealthCheck");
@@ -36,7 +36,7 @@ public class AccountServiceApp extends Application<Configuration> {
         }
 
         // initialise password service client, user manager, REST controllers
-        PasswordServiceClient passwordServiceClient = new PasswordServiceClient(jcArgs.host, jcArgs.port);
+        PasswordServiceClient passwordServiceClient = new PasswordServiceClient(jcArgs.grpcHost, jcArgs.grpcPort);
         UserManager userManager = new MappedUserManager(passwordServiceClient);
         env.jersey().register(new UserRESTController(userManager));
         env.jersey().register(new LoginRESTController(userManager));
@@ -71,8 +71,8 @@ public class AccountServiceApp extends Application<Configuration> {
         // log command line arguments for debugging purposes
         StringBuilder toLog = new StringBuilder();
         toLog.append("Starting server with arguments...\n");
-        toLog.append("\tHost = " + jcArgs.host).append("\n");
-        toLog.append("\tPort = " + jcArgs.port).append("\n");
+        toLog.append("\tgRPC Host = " + jcArgs.grpcHost).append("\n");
+        toLog.append("\tgRPC Port = " + jcArgs.grpcPort).append("\n");
         toLog.append("\t(specify --usage or -u for usage instructions)").append("\n");
         logger.info(toLog.toString());
 

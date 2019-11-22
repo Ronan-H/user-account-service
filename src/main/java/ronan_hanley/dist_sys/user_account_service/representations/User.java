@@ -1,5 +1,7 @@
 package ronan_hanley.dist_sys.user_account_service.representations;
 
+import org.jvnet.hk2.annotations.Optional;
+
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 

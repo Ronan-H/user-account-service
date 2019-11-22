@@ -5,6 +5,8 @@ import ronan_hanley.dist_sys.user_account_service.representations.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Path("/users")
@@ -18,11 +20,11 @@ public class UserRESTController {
     }
 
     @POST
-    public Response createUser(NewUser newUser) {
+    public Response createUser(NewUser newUser) throws URISyntaxException {
         if (newUser != null && !userManager.userExists(newUser.getUserDetails().getUserId())) {
             // user isn't null and doesn't already exist, create user asynchronously
             userManager.createUserAsync(newUser);
-            return Response.ok().build();
+            return Response.created(new URI("/users/" + newUser.getUserDetails().getUserId())).build();
         }
         else {
             // 400 bad request

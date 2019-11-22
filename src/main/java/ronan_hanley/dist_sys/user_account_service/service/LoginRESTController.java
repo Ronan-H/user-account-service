@@ -26,7 +26,7 @@ public class LoginRESTController {
         if (dbUser == null) {
             // user not found with that userName
             // 401 unauthorized
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Login failed, user not found with that userame").build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Login failed, user not found with that username").build();
         }
 
         if (!userManager.loginPasswordMatchesUser(loginUser, dbUser)) {

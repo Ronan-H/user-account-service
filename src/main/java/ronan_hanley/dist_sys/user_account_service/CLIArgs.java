@@ -25,5 +25,5 @@ public class CLIArgs {
             names = {"--num-dummy-users", "-du"},
             description = "Number of dummy users to create on startup"
     )
-    Integer numDummyUsers = 0;
+    Integer numDummyUsers = 5;
 }

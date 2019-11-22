@@ -2,8 +2,10 @@ package ronan_hanley.dist_sys.user_account_service.representations;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name="newUser")
+@XmlType(propOrder={"userDetails", "password"})
 public class NewUser {
     @NotNull
     private UserDetails userDetails;
@@ -36,7 +38,7 @@ public class NewUser {
 
     @Override
     public String toString() {
-        return String.format("(id = %d, user = %s, email: %s, pass = %s)",
+        return String.format("id = %-3d user = %-20s email: %-30s pass = %-15s",
                 getUserDetails().getUserId(),
                 getUserDetails().getUserName(),
                 getUserDetails().getEmail(),

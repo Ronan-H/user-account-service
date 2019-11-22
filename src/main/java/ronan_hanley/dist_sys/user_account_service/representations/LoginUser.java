@@ -2,8 +2,10 @@ package ronan_hanley.dist_sys.user_account_service.representations;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name="loginUser")
+@XmlType(propOrder={"userName", "password"})
 public class LoginUser {
     @NotNull
     private String userName;

@@ -43,14 +43,14 @@ public class AccountServiceApp extends Application<Configuration> {
         env.jersey().register(new LoginRESTController(userManager));
 
         if (jcArgs.numDummyUsers > 0) {
-            // generate dummy users (requested as a command line argument)
-            DummyUserGenerator dummyUserGenerator = new DummyUserGenerator(10);
+            // generate dummy users
+            DummyUserGenerator dummyUserGenerator = new DummyUserGenerator(3);
             NewUser[] dummyUsers = dummyUserGenerator.generateDummyUsers(jcArgs.numDummyUsers);
 
             StringBuilder toLog = new StringBuilder();
             for (NewUser dummyUser : dummyUsers) {
                 userManager.createUserAsync(dummyUser);
-                toLog.append(String.format("\t%nCreated dummy user %s", dummyUser.toString()));
+                toLog.append(String.format("\t%nCreated dummy user: %s", dummyUser.toString()));
             }
             logger.info(toLog.toString());
         }

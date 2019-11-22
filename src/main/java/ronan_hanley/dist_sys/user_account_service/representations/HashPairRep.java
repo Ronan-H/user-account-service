@@ -4,7 +4,9 @@ import com.google.protobuf.ByteString;
 import ronan_hanley.dist_sys.user_account_service.proto.HashPair;
 
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlType;
 
+@XmlType(propOrder={"hashedPassword", "salt"})
 public class HashPairRep {
     @NotNull
     private byte[] hashedPassword;

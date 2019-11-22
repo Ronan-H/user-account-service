@@ -6,7 +6,6 @@ import ronan_hanley.dist_sys.user_account_service.representations.UserDetails;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class DummyUserGenerator {
     private static final String[] FIRST_NAMES = {
@@ -59,7 +58,9 @@ public class DummyUserGenerator {
             "qwerty",
             "abcde",
             "letmein",
-            "monkey"
+            "monkey",
+            "dragon",
+            "admin"
     };
 
     public static final String[] PASSWORD_EXTENTIONS = {

@@ -4,6 +4,8 @@ import com.beust.jcommander.JCommander;
 import com.codahale.metrics.health.HealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
+import io.dropwizard.jetty.HttpConnectorFactory;
+import io.dropwizard.server.DefaultServerFactory;
 import io.dropwizard.setup.Environment;
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import ronan_hanley.dist_sys.user_account_service.service.*;
@@ -20,6 +22,9 @@ public class AccountServiceApp extends Application<Configuration> {
 
     @Override
     public void run(Configuration config, Environment env) {
+        // from https://stackoverflow.com/questions/20028451/change-dropwizard-default-ports
+        ((HttpConnectorFactory) ((DefaultServerFactory) config.getServerFactory()).getApplicationConnectors().get(0)).setPort(jcArgs.port);
+
         // register health check with using gRPC password service
         env.healthChecks().register("GRPCHealthCheck", new GRPCHealthCheck(jcArgs.grpcHost, jcArgs.grpcPort));
 
@@ -87,6 +92,7 @@ public class AccountServiceApp extends Application<Configuration> {
         // log command line arguments for debugging purposes
         StringBuilder toLog = new StringBuilder();
         toLog.append("Starting server with arguments...\n");
+        toLog.append("\tUser Account Service Port = " + jcArgs.port).append("\n");
         toLog.append("\tgRPC Host = " + jcArgs.grpcHost).append("\n");
         toLog.append("\tgRPC Port = " + jcArgs.grpcPort).append("\n");
         toLog.append("\tNumber of Dummy Users = " + jcArgs.numDummyUsers).append("\n");

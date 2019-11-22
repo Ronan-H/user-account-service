@@ -1,9 +1,12 @@
 Usage: java -jar user-account-service.jar [options]
   Options:
-    --grpc-host, -h
+    --port, -p
+      Port to run the User Account Service on
+      Default: 8080
+    --grpc-host, -gh
       IP address/domain of gRPC password service host
       Default: 127.0.0.1
-    --grpc-port, -p
+    --grpc-port, -gp
       Port of gRPC password service host
       Default: 50051
     --num-dummy-users, -du

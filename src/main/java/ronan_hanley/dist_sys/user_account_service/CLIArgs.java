@@ -10,13 +10,19 @@ public class CLIArgs {
     Boolean printUsage = false;
 
     @Parameter(
-            names = {"--grpc-host", "-h"},
+            names = {"--port", "-p"},
+            description = "Port to run the User Account Service on"
+    )
+    Integer port = 8080;
+
+    @Parameter(
+            names = {"--grpc-host", "-gh"},
             description = "IP address/domain of gRPC password service host"
     )
     String grpcHost = "127.0.0.1";
 
     @Parameter(
-            names = {"--grpc-port", "-p"},
+            names = {"--grpc-port", "-gp"},
             description = "Port of gRPC password service host"
     )
     Integer grpcPort = 50051;

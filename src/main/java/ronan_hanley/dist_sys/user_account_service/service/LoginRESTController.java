@@ -1,6 +1,7 @@
 package ronan_hanley.dist_sys.user_account_service.service;
 
-import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
+import ronan_hanley.dist_sys.user_account_service.representations.LoginUser;
+import ronan_hanley.dist_sys.user_account_service.representations.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -14,16 +15,24 @@ public class LoginRESTController {
     }
 
     @POST
-    public Response login(NewUser loginUser) {
+    public Response login(LoginUser loginUser) {
         if (loginUser == null) {
             // 400 bad request
-            return Response.status(Response.Status.BAD_REQUEST).entity("Bad request, user can't be null").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Bad request, login user can't be null").build();
         }
 
-        if (!userManager.isValidUser(loginUser)) {
-            // 400 bad request
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Login failed, user with those exact details does not exist (wrong password?)").build();
+        User dbUser = userManager.findUserByUsername(loginUser.getUserName());
+
+        if (dbUser == null) {
+            // user not found with that userName
+            // 401 unauthorized
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Login failed, user not found with that userame").build();
+        }
+
+        if (!userManager.loginPasswordMatchesUser(loginUser, dbUser)) {
+            // password incorrect
+            // 401 unauthorized
+            return Response.status(Response.Status.BAD_REQUEST).entity("Login failed, password incorrect").build();
         }
 
         // user exists and login is valid

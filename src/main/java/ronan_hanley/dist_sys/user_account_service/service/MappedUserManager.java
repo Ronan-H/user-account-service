@@ -4,6 +4,7 @@ import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import ronan_hanley.dist_sys.user_account_service.proto.HashResponse;
 import ronan_hanley.dist_sys.user_account_service.representations.HashPairRep;
+import ronan_hanley.dist_sys.user_account_service.representations.LoginUser;
 import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import ronan_hanley.dist_sys.user_account_service.representations.User;
 
@@ -72,21 +73,25 @@ public class MappedUserManager implements UserManager {
     }
 
     @Override
-    public boolean isValidUser(NewUser userLogin) {
-        User dbUser = users.get(userLogin.getUserDetails().getUserId());
+    public User findUserByUsername(String userName) {
+        List<User> users = getAllUsers();
 
-        if (dbUser == null) {
-            // user with that doesn't exist in the map
-            return false;
+        for (User user : users) {
+            if (user.getUserDetails().getUserName().equals(userName)) {
+                // found user matching userName
+                return user;
+            }
         }
 
-        if (!userLogin.getUserDetails().equals(dbUser.getUserDetails())) {
-            // user details (usedId, userName, email) don't fully match
-            return false;
-        }
+        // user with that userName not found, return null
+        return null;
+    }
 
-        // now just check if the passwords match (check hash(password, salt) == stored hash)
-        return passwordServiceClient.verifyPassword(userLogin.getPassword(), dbUser.getHashPairRep());
+    @Override
+    public boolean loginPasswordMatchesUser(LoginUser loginUser, User dbUser) {
+        // check if the login attempt password matches the user in the db's hash
+        // (check hash(password, salt) == stored hash)
+        return passwordServiceClient.verifyPassword(loginUser.getPassword(), dbUser.getHashPairRep());
     }
 
     @Override

@@ -10,6 +10,7 @@ public interface UserManager {
     void updateUser(NewUser updatedUser);
     void deleteUser(Integer id);
     List<User> getAllUsers();
-    boolean isValidUser(NewUser userLogin);
+    User findUserByUsername(String userName);
+    boolean loginPasswordMatchesUser(LoginUser loginUser, User dbUser);
     boolean userExists(Integer id);
 }

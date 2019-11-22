@@ -16,6 +16,9 @@ Usage: java -jar user-account-service.jar [options]
       Print usage instructions and exit
       Default: false
 
+Example:
+  java -jar user-account-service.jar -p 9090 -du 10 -gh 127.0.0.1 -gp 8080
+
 Github URL: https://github.com/Ronan-H/user-account-service
 OpenAPI definition: https://app.swaggerhub.com/apis/Ronan-H/user-account-service/1.0.0
 (Also included in the repo as swagger.yaml)

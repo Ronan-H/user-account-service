@@ -5,6 +5,7 @@ import com.codahale.metrics.health.HealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
+import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import ronan_hanley.dist_sys.user_account_service.service.*;
 
 import java.util.logging.Logger;
@@ -40,6 +41,18 @@ public class AccountServiceApp extends Application<Configuration> {
         UserManager userManager = new MappedUserManager(passwordServiceClient);
         env.jersey().register(new UserRESTController(userManager));
         env.jersey().register(new LoginRESTController(userManager));
+
+        if (jcArgs.numDummyUsers > 0) {
+            // generate dummy users (requested as a command line argument)
+            NewUser[] dummyUsers = DummyUserGenerator.generateDummyUsers(jcArgs.numDummyUsers);
+
+            StringBuilder toLog = new StringBuilder();
+            for (NewUser dummyUser : dummyUsers) {
+                userManager.createUserAsync(dummyUser);
+                toLog.append(String.format("\t%nCreated dummy user %s", dummyUser.toString()));
+            }
+            logger.info(toLog.toString());
+        }
     }
 
 
@@ -73,6 +86,7 @@ public class AccountServiceApp extends Application<Configuration> {
         toLog.append("Starting server with arguments...\n");
         toLog.append("\tgRPC Host = " + jcArgs.grpcHost).append("\n");
         toLog.append("\tgRPC Port = " + jcArgs.grpcPort).append("\n");
+        toLog.append("\tNumber of Dummy Users = " + jcArgs.numDummyUsers).append("\n");
         toLog.append("\t(specify --usage or -u for usage instructions)").append("\n");
         logger.info(toLog.toString());
 

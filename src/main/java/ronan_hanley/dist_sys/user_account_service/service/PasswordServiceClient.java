@@ -30,8 +30,6 @@ public class PasswordServiceClient {
     }
 
     public void generateHashPairAsync(NewUser newUser, StreamObserver<HashResponse> responseObserver) {
-        logger.info("Generating hash pair");
-
         // build hash request
         HashRequest hashRequest = HashRequest.newBuilder()
                 .setUserId(newUser.getUserDetails().getUserId())

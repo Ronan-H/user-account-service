@@ -33,4 +33,13 @@ public class NewUser {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return String.format("(id = %d, user = %s, email: %s, pass = %s)",
+                getUserDetails().getUserId(),
+                getUserDetails().getUserName(),
+                getUserDetails().getEmail(),
+                getPassword());
+    }
 }

@@ -30,7 +30,6 @@ public class MappedUserManager implements UserManager {
         StreamObserver<HashResponse> responseObserver = new StreamObserver<HashResponse>() {
             @Override
             public void onNext(HashResponse hashResponse) {
-                logger.info("Received hash response");
                 // convert HashPair proto object to HashPairRep
                 HashPairRep hashPair = new HashPairRep(hashResponse.getHashPair());
                 // create User object based on newUser and add to map
@@ -44,9 +43,7 @@ public class MappedUserManager implements UserManager {
             }
 
             @Override
-            public void onCompleted() {
-                logger.info("Hash completed");
-            }
+            public void onCompleted() {}
         };
 
         // generate a HashPair from the new user's password (asynchronous)

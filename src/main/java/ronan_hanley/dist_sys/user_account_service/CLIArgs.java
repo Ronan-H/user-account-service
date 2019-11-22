@@ -20,4 +20,10 @@ public class CLIArgs {
             description = "Port of gRPC password service host"
     )
     Integer grpcPort = 50051;
+
+    @Parameter(
+            names = {"--num-dummy-users", "-du"},
+            description = "Number of dummy users to create on startup"
+    )
+    Integer numDummyUsers = 0;
 }

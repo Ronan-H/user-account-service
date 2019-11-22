@@ -15,13 +15,18 @@ public class LoginRESTController {
 
     @POST
     public Response login(NewUser loginUser) {
-        if (loginUser != null && userManager.isValidUser(loginUser)) {
-            // user exists and login is valid
-            return Response.ok().build();
-        }
-        else {
+        if (loginUser == null) {
             // 400 bad request
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Bad request, user can't be null").build();
         }
+
+        if (!userManager.isValidUser(loginUser)) {
+            // 400 bad request
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Login failed, user with those exact details does not exist (wrong password?)").build();
+        }
+
+        // user exists and login is valid
+        return Response.ok().entity("Login successful").build();
     }
 }

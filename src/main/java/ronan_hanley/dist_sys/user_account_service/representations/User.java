@@ -1,7 +1,5 @@
 package ronan_hanley.dist_sys.user_account_service.representations;
 
-import org.jvnet.hk2.annotations.Optional;
-
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -24,15 +22,7 @@ public class User {
         return userDetails;
     }
 
-    public void setUserDetails(UserDetails userDetails) {
-        this.userDetails = userDetails;
-    }
-
     public HashPairRep getHashPairRep() {
         return hashPairRep;
-    }
-
-    public void setHashPairRep(HashPairRep hashPairRep) {
-        this.hashPairRep = hashPairRep;
     }
 }

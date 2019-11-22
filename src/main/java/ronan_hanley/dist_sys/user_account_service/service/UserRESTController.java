@@ -21,28 +21,31 @@ public class UserRESTController {
 
     @POST
     public Response createUser(NewUser newUser) throws URISyntaxException {
-        if (newUser != null && !userManager.userExists(newUser.getUserDetails().getUserId())) {
-            // user isn't null and doesn't already exist, create user asynchronously
-            userManager.createUserAsync(newUser);
-            return Response.created(new URI("/users/" + newUser.getUserDetails().getUserId())).build();
-        }
-        else {
+        if (newUser == null) {
             // 400 bad request
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Bad request, new user can't be null").build();
         }
+
+        if (userManager.userExists(newUser.getUserDetails().getUserId())) {
+            // 409 conflict
+            return Response.status(Response.Status.CONFLICT).entity("Conflict, user with that id already exists").build();
+        }
+
+        // user isn't null and doesn't already exist, create user asynchronously
+        userManager.createUserAsync(newUser);
+        return Response.created(new URI("/users/" + newUser.getUserDetails().getUserId())).entity("User created successfully").build();
     }
 
     @GET
     @Path("/{id}")
     public Response getUser(@PathParam("id") Integer id) {
-        if (userManager.userExists(id)) {
-            // user exists, respond with user details
-            return Response.ok(userManager.getUser(id)).build();
-        }
-        else {
+        if (!userManager.userExists(id)) {
             // 404 user not found
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found with that id").build();
         }
+
+        // user exists, respond with user details
+        return Response.ok(userManager.getUser(id)).build();
     }
 
     @GET
@@ -56,32 +59,30 @@ public class UserRESTController {
     @PUT
     public Response updateUser(NewUser updatedUser) {
         if (updatedUser == null) {
-            // 400 bad request (user was null)
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            // 400 bad request
+            return Response.status(Response.Status.BAD_REQUEST).entity("Bad request, updated user can't be null").build();
         }
 
-        if (userManager.userExists(updatedUser.getUserDetails().getUserId())) {
-            // user exists, update user
-            userManager.updateUser(updatedUser);
-            return Response.ok().build();
-        }
-        else {
+        if (!userManager.userExists(updatedUser.getUserDetails().getUserId())) {
             // 404 user not found
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found with that id").build();
         }
+
+        // user exists, update user
+        userManager.updateUser(updatedUser);
+        return Response.ok().entity("User updated successfully").build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") Integer id) {
-        if (userManager.userExists(id)) {
-            // user exists, delete user
-            userManager.deleteUser(id);
-            return Response.ok().build();
-        }
-        else {
+        if (!userManager.userExists(id)) {
             // 404 user not found
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found with that id").build();
         }
+
+        // user exists, delete user
+        userManager.deleteUser(id);
+        return Response.ok().entity("User deleted successfully").build();
     }
 }

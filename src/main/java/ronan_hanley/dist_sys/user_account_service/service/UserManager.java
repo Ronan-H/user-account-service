@@ -3,6 +3,7 @@ package ronan_hanley.dist_sys.user_account_service.service;
 import io.grpc.StatusRuntimeException;
 import ronan_hanley.dist_sys.user_account_service.representations.*;
 
+import javax.ws.rs.core.*;
 import java.util.List;
 
 /**
@@ -18,6 +19,9 @@ public interface UserManager {
     List<User> getAllUsers();
 
     boolean userExists(Integer id);
+    boolean isOperationResultAvailable(Integer id);
+    boolean isOperationInProgress(Integer id);
+    Response getOperationResult(Integer id);
     User findUserByUsername(String userName);
     boolean loginPasswordMatchesUser(LoginUser loginUser, User dbUser);
 }

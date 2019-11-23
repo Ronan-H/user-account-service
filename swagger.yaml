@@ -9,8 +9,8 @@ paths:
       summary: creates a new user
       operationId: createUser
       responses:
-        '201':
-          description: user created successfully
+        '202':
+          description: user operation request accepted
         '400':
           description: bad request, NewUser can't be null
         '409':
@@ -44,14 +44,14 @@ paths:
       summary: update user details
       operationId: updateUser
       responses:
-        '200':
-          description: user updated successfully
+        '202':
+          description: user operation request accepted
         '400':
           description: bad request, NewUser can't be null
         '404':
           description: user not found with the id of passed NewUser
         '503':
-          description: failed to create user, hashing service was not available
+          description: failed to update user, hashing service was not available
       requestBody:
         $ref: '#/components/requestBodies/NewUser'
   /users/{id}:
@@ -94,6 +94,23 @@ paths:
           description: user deleted successfully
         '404':
           description: Invalid user ID
+  /users/status/{id}:
+    get:
+      summary: get status of the most recent create/update operation on a user
+      operationId: getUserStatus
+      parameters:
+        - name: id
+          in: path
+          description: id of user's operation status to check
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: user operation successful
+        '503':
+          description: user create/update operation failed, hashing service was not available
   /login:
     post:
       summary: user login

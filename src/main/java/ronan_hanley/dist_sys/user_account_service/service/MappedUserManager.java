@@ -19,7 +19,7 @@ import java.util.concurrent.*;
 
 public class MappedUserManager implements UserManager {
     private Map<Integer, User> users;
-    private Map<Integer, CompletableFuture<Response>> operationResults;
+    private Map<Integer, CompletableFuture<Response.ResponseBuilder>> operationResults;
     private PasswordServiceClient passwordServiceClient;
 
     public MappedUserManager(PasswordServiceClient passwordServiceClient) {
@@ -43,8 +43,8 @@ public class MappedUserManager implements UserManager {
                 users.put(newUser.getUserDetails().getUserId(), new User(newUser.getUserDetails(), hashPair));
 
                 try {
-                    Response response = Response.ok(new URI("/users/" + newUser.getUserDetails().getUserId()))
-                                       .entity("User create/update operation successful").build();
+                    Response.ResponseBuilder response = Response.ok(new URI("/users/" + newUser.getUserDetails().getUserId()))
+                            .entity("User create/update operation successful");
 
                     operationResults.get(newUser.getUserDetails().getUserId()).complete(response);
                 } catch (URISyntaxException e) {
@@ -54,8 +54,8 @@ public class MappedUserManager implements UserManager {
 
             @Override
             public void onError(Throwable throwable) {
-                Response response = Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                        .entity("Failed to create user, password hashing service was not available. Try again later.").build();
+                Response.ResponseBuilder response = Response.status(Response.Status.SERVICE_UNAVAILABLE)
+                        .entity("Failed to create user, password hashing service was not available. Try again later.");
 
                 operationResults.get(newUser.getUserDetails().getUserId()).complete(response);
             }
@@ -107,18 +107,18 @@ public class MappedUserManager implements UserManager {
     @Override
     public boolean isOperationInProgress(Integer id) {
         // true if someone's already trying to create/update this user
-        CompletableFuture<Response> future = operationResults.get(id);
+        CompletableFuture<Response.ResponseBuilder> future = operationResults.get(id);
         return future != null && !future.isDone();
     }
 
     @Override
-    public Response getOperationResult(Integer id) {
+    public Response.ResponseBuilder getOperationResult(Integer id) {
         // gets result of create/update operation
         try {
             return operationResults.get(id).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-            return Response.serverError().entity("Server error while trying to obtain operation result").build();
+            return Response.serverError().entity("Server error while trying to obtain operation result");
         }
     }
 

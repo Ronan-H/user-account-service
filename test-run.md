@@ -77,9 +77,15 @@ Running user account service and gRPC password service with no arguments. Create
 }
 ```
 
-**Response:** 201 Created
+**Response:** 202 Accepted
 
-*User created successfully*
+*"/users/status/5"*
+
+## GET /users/status/5 (view create/update operation status for a user)
+
+**Response:** 200 OK
+
+*User create/update operation successful*
 
 ## GET /users/5 (get info on a specific user)
 
@@ -119,9 +125,9 @@ Running user account service and gRPC password service with no arguments. Create
 }
 ```
 
-**Response:** 200 OK
+**Response:** 202 Accepted
 
-*User updated successfully*
+*"/users/status/0"*
 
 ## POST /login (login a user)
 

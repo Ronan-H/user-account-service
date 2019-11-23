@@ -109,7 +109,7 @@ public class UserRESTController {
         }
 
         // user exists, respond with create/update operation result
-        return userManager.getOperationResult(id);
+        return userManager.getOperationResult(id).build();
     }
 
     @DELETE

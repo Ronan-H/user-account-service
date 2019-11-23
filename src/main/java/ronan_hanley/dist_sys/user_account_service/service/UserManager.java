@@ -21,7 +21,7 @@ public interface UserManager {
     boolean userExists(Integer id);
     boolean isOperationResultAvailable(Integer id);
     boolean isOperationInProgress(Integer id);
-    Response getOperationResult(Integer id);
+    Response.ResponseBuilder getOperationResult(Integer id);
     User findUserByUsername(String userName);
     boolean loginPasswordMatchesUser(LoginUser loginUser, User dbUser);
 }

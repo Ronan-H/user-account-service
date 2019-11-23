@@ -38,8 +38,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
-        '404':
-          description: user not found with that id
     put:
       summary: update user details
       operationId: updateUser
@@ -93,7 +91,7 @@ paths:
         '200':
           description: user deleted successfully
         '404':
-          description: Invalid user ID
+          description: user not found with that id
   /users/status/{id}:
     get:
       summary: get status of the most recent create/update operation on a user

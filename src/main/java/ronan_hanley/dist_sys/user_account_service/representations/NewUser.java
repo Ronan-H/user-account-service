@@ -1,5 +1,7 @@
 package ronan_hanley.dist_sys.user_account_service.representations;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -10,7 +12,7 @@ public class NewUser {
     @NotNull
     private UserDetails userDetails;
 
-    @NotNull
+    @NotEmpty
     private String password;
 
     public NewUser(UserDetails userDetails, String password) {
@@ -38,7 +40,8 @@ public class NewUser {
 
     @Override
     public String toString() {
-        return String.format("id = %-3d user = %-20s email: %-30s pass = %-15s",
+        // simple string representation
+        return String.format("id = %-3d uname = %-20s email: %-30s pass = %-15s",
                 getUserDetails().getUserId(),
                 getUserDetails().getUserName(),
                 getUserDetails().getEmail(),

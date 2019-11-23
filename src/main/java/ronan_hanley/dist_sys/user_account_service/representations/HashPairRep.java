@@ -1,17 +1,17 @@
 package ronan_hanley.dist_sys.user_account_service.representations;
 
 import com.google.protobuf.ByteString;
+import org.hibernate.validator.constraints.NotEmpty;
 import ronan_hanley.dist_sys.user_account_service.proto.HashPair;
 
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(propOrder={"hashedPassword", "salt"})
 public class HashPairRep {
-    @NotNull
+    @NotEmpty
     private byte[] hashedPassword;
 
-    @NotNull
+    @NotEmpty
     private byte[] salt;
 
     public HashPairRep(byte[] hashedPassword, byte[] salt) {

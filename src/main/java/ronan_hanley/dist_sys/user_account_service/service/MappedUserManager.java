@@ -10,9 +10,9 @@ import ronan_hanley.dist_sys.user_account_service.representations.NewUser;
 import ronan_hanley.dist_sys.user_account_service.representations.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MappedUserManager implements UserManager {
     private Map<Integer, User> users;
@@ -20,7 +20,8 @@ public class MappedUserManager implements UserManager {
 
     public MappedUserManager(PasswordServiceClient passwordServiceClient) {
         this.passwordServiceClient = passwordServiceClient;
-        users = new HashMap<>();
+        // ConcurrentHashMap because we're adding/updating users asynchronously
+        users = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -43,7 +44,8 @@ public class MappedUserManager implements UserManager {
             public void onCompleted() {}
         };
 
-        // generate a HashPair from the new user's password (asynchronous)
+        // generate a HashPair from the new user's password
+        // asynchronous gRPC call (must provide a StreamObserver, the one defined above)
         passwordServiceClient.generateHashPairAsync(newUser, responseObserver);
     }
 
@@ -53,8 +55,12 @@ public class MappedUserManager implements UserManager {
     }
 
     @Override
-    public void updateUser(NewUser updatedUser) throws StatusRuntimeException{
-        // creating a user same as updating one?
+    public void updateUserAsync(NewUser updatedUser) throws StatusRuntimeException{
+        // updating a user is the same as creating one
+
+        // (UserRESTController will have different requirements for each though,
+        // for example a user must not already exist when creating one, but must
+        // exist when updating)
         createUserAsync(updatedUser);
     }
 
@@ -69,10 +75,16 @@ public class MappedUserManager implements UserManager {
     }
 
     @Override
+    public boolean userExists(Integer id) {
+        return getUser(id) != null;
+    }
+
+    @Override
     public User findUserByUsername(String userName) {
         List<User> users = getAllUsers();
 
         for (User user : users) {
+            // userNames are case sensitive
             if (user.getUserDetails().getUserName().equals(userName)) {
                 // found user matching userName
                 return user;
@@ -87,11 +99,8 @@ public class MappedUserManager implements UserManager {
     public boolean loginPasswordMatchesUser(LoginUser loginUser, User dbUser) {
         // check if the login attempt password matches the user in the db's hash
         // (check hash(password, salt) == stored hash)
-        return passwordServiceClient.verifyPassword(loginUser.getPassword(), dbUser.getHashPairRep());
-    }
 
-    @Override
-    public boolean userExists(Integer id) {
-        return getUser(id) != null;
+        // synchronous gRPC call
+        return passwordServiceClient.verifyPassword(loginUser.getPassword(), dbUser.getHashPairRep());
     }
 }

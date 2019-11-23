@@ -14,8 +14,8 @@ public class PasswordServiceClient {
     private final PasswordServiceGrpc.PasswordServiceBlockingStub clientStub;
     private final PasswordServiceGrpc.PasswordServiceStub asyncClientStub;
 
-    /** Construct client for accessing password service server using the existing channel. */
     public PasswordServiceClient(String host, int port) {
+        // construct client for accessing password service server using the existing channel
         this.channel = ManagedChannelBuilder.forAddress(host, port)
                 // no TLS encryption
                 .usePlaintext()

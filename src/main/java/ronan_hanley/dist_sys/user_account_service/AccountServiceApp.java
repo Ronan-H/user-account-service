@@ -23,6 +23,7 @@ public class AccountServiceApp extends Application<Configuration> {
     @Override
     public void run(Configuration config, Environment env) {
         // from https://stackoverflow.com/questions/20028451/change-dropwizard-default-ports
+        // set the port to listen on
         ((HttpConnectorFactory) ((DefaultServerFactory) config.getServerFactory()).getApplicationConnectors().get(0)).setPort(jcArgs.port);
 
         // register health check with using gRPC password service

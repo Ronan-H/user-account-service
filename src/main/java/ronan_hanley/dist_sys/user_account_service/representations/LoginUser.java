@@ -1,16 +1,17 @@
 package ronan_hanley.dist_sys.user_account_service.representations;
 
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name="loginUser")
 @XmlType(propOrder={"userName", "password"})
 public class LoginUser {
-    @NotNull
+    @NotEmpty
     private String userName;
 
-    @NotNull
+    @NotEmpty
     private String password;
 
     public LoginUser(String userName, String password) {

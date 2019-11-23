@@ -1,5 +1,7 @@
 package ronan_hanley.dist_sys.user_account_service.representations;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlType;
 
@@ -8,10 +10,10 @@ public class UserDetails {
     @NotNull
     private Integer userId;
 
-    @NotNull
+    @NotEmpty
     private String userName;
 
-    @NotNull
+    @NotEmpty
     private String email;
 
     public UserDetails(Integer userId, String userName, String email) {

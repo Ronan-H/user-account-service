@@ -125,6 +125,7 @@ public class DummyUserGenerator {
                 lastName.toLowerCase(),
                 emailDomain);
         String password = String.format("%s%s",
+                // random chance of being in uppercase
                 random.nextInt(5) == 0 ? basePassword.toUpperCase() : basePassword.toLowerCase(),
                 passwordExt);
 
